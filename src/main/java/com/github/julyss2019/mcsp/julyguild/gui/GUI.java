@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.gui.entities.MainGUI;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public interface GUI {
             className = this.getClass().getTypeName();
         }
 
-        GuildLogger.debug("=== 尝试创建GUI " + className + " ===");
+        JulyGuildLogger.debug("=== 尝试创建GUI " + className + " ===");
 
         Inventory inventory = createInventory();
 
@@ -89,12 +89,12 @@ public interface GUI {
             throw new RuntimeException("getInventory() 不能返回 null");
         }
 
-        GuildLogger.debug("=== 创建GUI " + className + " 完毕 ===");
+        JulyGuildLogger.debug("=== 创建GUI " + className + " 完毕 ===");
 
         getGuildPlayer().getBukkitPlayer().openInventory(inventory);
         getGuildPlayer().setUsingGUI(this);
 
-        GuildLogger.debug("玩家 '" + getGuildPlayer().getName() + "' 打开了 GUI '" + className + "'.");
+        JulyGuildLogger.debug("玩家 '" + getGuildPlayer().getName() + "' 打开了 GUI '" + className + "'.");
     }
 
     default boolean canBack() {

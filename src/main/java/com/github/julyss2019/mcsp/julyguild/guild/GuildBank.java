@@ -108,8 +108,6 @@ public class GuildBank {
      * @param bigDecimal BigDecimal
      */
     public synchronized void setBalance(@NotNull GuildBank.BalanceType balanceType, @NotNull BigDecimal bigDecimal) {
-        BigDecimal old = getBalance(balanceType);
-
         section.set(balanceType.name(), bigDecimal.toString());
         guild.save();
         balanceMap.put(balanceType, bigDecimal);

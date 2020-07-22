@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.request.entities.JoinRequest;
@@ -46,11 +46,11 @@ public class GuildInfoGUI extends BasePlayerGUI {
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.request_join");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.request_join");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.request_join"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -77,9 +77,9 @@ public class GuildInfoGUI extends BasePlayerGUI {
                 Util.sendMsg(bukkitPlayer, thisLangSection.getString("request_join.success"));
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.request_join");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.request_join");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.members");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.members");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.members"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
@@ -87,9 +87,9 @@ public class GuildInfoGUI extends BasePlayerGUI {
                         new GuildMemberListGUI(GuildInfoGUI.this, guild, guildPlayer).open();
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.members");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.members");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
@@ -98,7 +98,7 @@ public class GuildInfoGUI extends BasePlayerGUI {
                         }
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         return guiBuilder.build();
     }

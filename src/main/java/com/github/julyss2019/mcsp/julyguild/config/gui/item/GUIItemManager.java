@@ -2,7 +2,7 @@ package com.github.julyss2019.mcsp.julyguild.config.gui.item;
 
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.item.ItemBuilder;
@@ -81,7 +81,7 @@ public class GUIItemManager {
             material = Material.valueOf(section.getString("material"));
         } catch (Exception e) {
             material = Material.STONE;
-            GuildLogger.warning("material 不合法, 路径: '" + section.getCurrentPath() + "'.");
+            JulyGuildLogger.warning("material 不合法, 路径: '" + section.getCurrentPath() + "'.");
         }
 
         itemBuilder
@@ -103,7 +103,7 @@ public class GUIItemManager {
                 try {
                     itemFlag = ItemFlag.valueOf(flagName);
                 } catch (IllegalArgumentException e) {
-                    GuildLogger.warning("flag = " + flagName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    JulyGuildLogger.warning("flag = " + flagName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
                     continue;
                 }
 
@@ -123,7 +123,7 @@ public class GUIItemManager {
 
         if (section.contains("skull_owner")) {
             if (!materialName.equals("PLAYER_HEAD") && !materialName.equals("SKULL_ITEM")) {
-                GuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
+                JulyGuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
             } else {
                 itemBuilder.skullOwner(section.getString("skull_owner"));
             }
@@ -131,7 +131,7 @@ public class GUIItemManager {
 
         if (section.contains("skull_texture") && ItemBuilder.isSkullTextureEnabled()) {
             if (!materialName.equals("PLAYER_HEAD") && !materialName.equals("SKULL_ITEM")) {
-                GuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
+                JulyGuildLogger.warning("skull_owner 不合法, 因为 material 不是头颅, 路径: '" + section.getCurrentPath() + "'.");
             } else {
                 itemBuilder.skullTexture(section.getString("skull_texture"));
             }
@@ -144,7 +144,7 @@ public class GUIItemManager {
                 try {
                     enchantment = Enchantment.getByName(enchantmentName);
                 } catch (Exception e) {
-                    GuildLogger.warning("enchantment = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    JulyGuildLogger.warning("enchantment = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
                     continue;
                 }
 
@@ -153,7 +153,7 @@ public class GUIItemManager {
                 try {
                     level = section.getConfigurationSection("enchantments").getInt(enchantmentName);
                 } catch (Exception e1) {
-                    GuildLogger.warning("enchantment.lv = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
+                    JulyGuildLogger.warning("enchantment.lv = " + enchantmentName + " 不合法, 路径: '" + section.getCurrentPath() + "'.");
                     continue;
                 }
 

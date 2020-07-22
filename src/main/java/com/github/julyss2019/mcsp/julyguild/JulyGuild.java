@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.config.setting.MainSettings;
 import com.github.julyss2019.mcsp.julyguild.guild.CacheGuildManager;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildManager;
 import com.github.julyss2019.mcsp.julyguild.listener.*;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayerManager;
 import com.github.julyss2019.mcsp.julyguild.request.RequestManager;
@@ -100,13 +100,13 @@ public class JulyGuild extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        GuildLogger.init();
-        GuildLogger.info("插件版本: v" + getDescription().getVersion() + ".");
-        GuildLogger.info("Bug反馈/插件交流群: 786184610.");
+        JulyGuildLogger.init();
+        JulyGuildLogger.info("插件版本: v" + getDescription().getVersion() + ".");
+        JulyGuildLogger.info("Bug反馈/插件交流群: 786184610.");
 
         for (String pluginName : DEPEND_PLUGINS) {
             if (!Bukkit.getPluginManager().isPluginEnabled(pluginName)) {
-                GuildLogger.info("前置插件 " + pluginName + " 未被加载, 插件将被卸载.");
+                JulyGuildLogger.info("前置插件 " + pluginName + " 未被加载, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
@@ -124,41 +124,41 @@ public class JulyGuild extends JavaPlugin {
 
         if (MainSettings.isMetricsEnabled()) {
             new Metrics(this);
-            GuildLogger.info("bStats统计: 已启用.");
+            JulyGuildLogger.info("bStats统计: 已启用.");
         }
 
         if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
             this.placeholderAPIExpansion = new PlaceholderAPIExpansion();
 
             if (!((PlaceholderAPIExpansion) placeholderAPIExpansion).register()) {
-                GuildLogger.error("PlaceholderAPI: Hook失败.");
+                JulyGuildLogger.error("PlaceholderAPI: Hook失败.");
             } else {
-                GuildLogger.info("PlaceholderAPI: Hook成功.");
+                JulyGuildLogger.info("PlaceholderAPI: Hook成功.");
             }
         }
 
         if (!pluginManager.isPluginEnabled("Vault")) {
-            GuildLogger.error("Vault: 未启用, 插件将被卸载.");
+            JulyGuildLogger.error("Vault: 未启用, 插件将被卸载.");
             setEnabled(false);
             return;
         } else {
             Economy tmp = setupEconomy();
 
             if (tmp == null) {
-                GuildLogger.error("Vault: Hook失败, 插件将被卸载.");
+                JulyGuildLogger.error("Vault: Hook失败, 插件将被卸载.");
                 setEnabled(false);
                 return;
             }
 
             this.vaultEconomy = new VaultEconomy(tmp);
-            GuildLogger.info("Vault: Hook成功.");
+            JulyGuildLogger.info("Vault: Hook成功.");
         }
 
         if (pluginManager.isPluginEnabled("PlayerPoints")) {
             this.playerPointsEconomy = new PlayerPointsEconomy(((PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints")).getAPI());
-            GuildLogger.info("PlayerPoints: Hook成功.");
+            JulyGuildLogger.info("PlayerPoints: Hook成功.");
         } else {
-            GuildLogger.warning("PlayerPoints: 未启用.");
+            JulyGuildLogger.warning("PlayerPoints: 未启用.");
         }
 
         guildManager.loadGuilds();
@@ -178,9 +178,9 @@ public class JulyGuild extends JavaPlugin {
         registerListeners();
         runTasks();
 
-        GuildLogger.info("载入了 " + guildManager.getGuilds().size() + "个 公会.");
-        GuildLogger.info("载入了 " + requestManager.getRequests().size() + "个 请求.");
-        GuildLogger.info("插件初始化完毕.");
+        JulyGuildLogger.info("载入了 " + guildManager.getGuilds().size() + "个 公会.");
+        JulyGuildLogger.info("载入了 " + requestManager.getRequests().size() + "个 请求.");
+        JulyGuildLogger.info("插件初始化完毕.");
     }
 
     @Override
@@ -199,11 +199,11 @@ public class JulyGuild extends JavaPlugin {
 
         JulyLibrary.getInstance().getChatInterceptorManager().unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
-        GuildLogger.info("插件被卸载.");
-        GuildLogger.info("Bug反馈/插件交流群: 786184610.");
+        JulyGuildLogger.info("插件被卸载.");
+        JulyGuildLogger.info("Bug反馈/插件交流群: 786184610.");
 
-        if (GuildLogger.isWriterEnabled()) {
-            GuildLogger.closeWriters();
+        if (JulyGuildLogger.isWriterEnabled()) {
+            JulyGuildLogger.closeWriters();
         }
     }
 
@@ -298,7 +298,7 @@ public class JulyGuild extends JavaPlugin {
 
             if (!changes.isEmpty()) {
                 YamlUtil.saveYaml(yaml, file, StandardCharsets.UTF_8);
-                changes.forEach(s -> GuildLogger.warning("文件 " + file.getAbsolutePath() + " 节点 " + s + " 被补全."));
+                changes.forEach(s -> JulyGuildLogger.warning("文件 " + file.getAbsolutePath() + " 节点 " + s + " 被补全."));
             }
         }
 

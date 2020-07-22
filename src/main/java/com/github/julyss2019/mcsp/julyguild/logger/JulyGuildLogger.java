@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class GuildLogger {
+public class JulyGuildLogger {
 	public static void init() {
 		File logFolder = new File(JulyGuild.inst().getDataFolder(), "logs");
 
@@ -30,7 +30,7 @@ public class GuildLogger {
 	}
 
 	public static void setLevel(@NotNull LoggerLevel level) {
-		GuildLogger.level = level;
+		JulyGuildLogger.level = level;
 	}
 
 	public static void debug(@NotNull String msg) {
@@ -62,7 +62,7 @@ public class GuildLogger {
 	}
 
 	private static void log(@NotNull LoggerLevel loggerLevel, @NotNull String msg) {
-		if (loggerLevel.getLevel() >= GuildLogger.level.getLevel()) {
+		if (loggerLevel.getLevel() >= JulyGuildLogger.level.getLevel()) {
 			Util.sendConsoleMsg("§" + loggerLevel.color + "[" + loggerLevel.name() + "] " + msg);
 			saveToDisk("[" + Util.HH_MM_SS_FORMAT.format(System.currentTimeMillis()) + "] [" + loggerLevel.name() + "] " + msg);
 		}

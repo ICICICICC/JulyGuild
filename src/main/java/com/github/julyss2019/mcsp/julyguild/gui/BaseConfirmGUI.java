@@ -1,10 +1,9 @@
 package com.github.julyss2019.mcsp.julyguild.gui;
 
 import com.github.julyss2019.mcsp.julyguild.DebugMessage;
-import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
@@ -46,27 +45,27 @@ public abstract class BaseConfirmGUI extends BasePlayerGUI {
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(section, confirmPlaceholderContainer);
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.cancel");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.cancel");
         guiBuilder.item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.cancel"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
                         onCancel();
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.cancel");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.cancel");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.confirm");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.confirm");
         guiBuilder.item(GUIItemManager.getIndexItem(section.getConfigurationSection("items.confirm"), bukkitPlayer, confirmPlaceholderContainer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 onConfirm();
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.confirm");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.confirm");
 
         return guiBuilder.build();
     }

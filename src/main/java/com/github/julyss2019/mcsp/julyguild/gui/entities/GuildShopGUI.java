@@ -13,7 +13,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.ShopItemConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.*;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.request.entities.TpAllRequest;
@@ -34,6 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 public class GuildShopGUI extends BasePlayerGUI {
     private enum RewardType {
@@ -55,7 +56,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guildMember
      */
     protected GuildShopGUI(@Nullable GUI lastGUI, @NotNull GuildMember guildMember) {
-        this(lastGUI, guildMember, JulyGuild.inst().getShop(MainSettings.getGuildShopLauncher()));
+        this(lastGUI, guildMember, Optional.ofNullable(JulyGuild.inst().getShop(MainSettings.getGuildShopLauncher())).orElseThrow(() -> new RuntimeException("引导商店不存在")));
     }
 
     protected GuildShopGUI(@Nullable GUI lastGUI, @NotNull GuildMember guildMember, @NotNull Shop shop) {
@@ -76,19 +77,19 @@ public class GuildShopGUI extends BasePlayerGUI {
     public Inventory createInventory() {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(yml, bukkitPlayer);
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug("尝试载入商店 " + shopName + ".");
+        JulyGuildLogger.debug("尝试载入商店 " + shopName + ".");
         if (yml.contains("items")) {
             for (String shopItemName : yml.getConfigurationSection("items").getKeys(false)) {
                 ConfigurationSection shopItemSection = yml.getConfigurationSection("items").getConfigurationSection(shopItemName);
                 String rewardTypeStr = shopItemSection.getString("reward_type");
 
-                GuildLogger.debug("尝试获取物品类型 '" + shopItemSection.getCurrentPath() + "'.");
+                JulyGuildLogger.debug("尝试获取物品类型 '" + shopItemSection.getCurrentPath() + "'.");
                 RewardType rewardType = RewardType.valueOf(rewardTypeStr);
-                GuildLogger.debug("获取物品类型完毕 '" + shopItemSection.getCurrentPath() + "'.");
+                JulyGuildLogger.debug("获取物品类型完毕 '" + shopItemSection.getCurrentPath() + "'.");
 
                 switch (rewardType) {
                     case NONE:
@@ -120,7 +121,7 @@ public class GuildShopGUI extends BasePlayerGUI {
             }
         }
 
-        GuildLogger.debug("载入商店 " + shopName + " 完毕.");
+        JulyGuildLogger.debug("载入商店 " + shopName + " 完毕.");
         return guiBuilder.build();
     }
 
@@ -134,7 +135,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setCommandReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
         double price = sellSection.getDouble("price");
 
@@ -159,7 +160,7 @@ public class GuildShopGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -168,7 +169,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setGuildTpAllReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
         double price = sellSection.getDouble("price");
 
@@ -229,7 +230,7 @@ public class GuildShopGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -238,7 +239,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setGuildIconReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
         double price = sellSection.getDouble("price");
 
@@ -264,7 +265,7 @@ public class GuildShopGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -273,7 +274,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setShopReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         guiBuilder.item(GUIItemManager.getIndexItem(shopItemSection, bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -281,7 +282,7 @@ public class GuildShopGUI extends BasePlayerGUI {
                 new GuildShopGUI(lastGUI, guildMember, plugin.getShop(shopItemSection.getString("shop"))).open();
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -290,14 +291,14 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setBackReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         guiBuilder.item(GUIItemManager.getIndexItem(shopItemSection, bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 back();
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -306,7 +307,7 @@ public class GuildShopGUI extends BasePlayerGUI {
      * @param guiBuilder
      */
     private void setGuildUpgradeReward(@NotNull ConfigurationSection shopItemSection, @NotNull IndexConfigGUI.Builder guiBuilder) {
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         boolean available = guild.getMaxMemberCount() + 1 <= MainSettings.getGuildUpgradeMaxMemberCount();
         ConfigurationSection subItemSection = shopItemSection.getConfigurationSection(available ? "available" : "unavailable");
 
@@ -314,7 +315,7 @@ public class GuildShopGUI extends BasePlayerGUI {
             ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
             double price = sellSection.getDouble("price");
 
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
             guiBuilder.item(GUIItemManager.getIndexItem(subItemSection, bukkitPlayer, new PlaceholderContainer()
                     .add("old", guild.getMaxMemberCount())
                     .add("new", guild.getMaxMemberCount() + 1)
@@ -341,13 +342,13 @@ public class GuildShopGUI extends BasePlayerGUI {
                     }
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
         } else {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
             guiBuilder.item(GUIItemManager.getIndexItem(subItemSection, bukkitPlayer));
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, subItemSection.getCurrentPath());
         }
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**
@@ -359,7 +360,7 @@ public class GuildShopGUI extends BasePlayerGUI {
         ConfigurationSection sellSection = shopItemSection.getConfigurationSection("sell");
         double price = sellSection.getDouble("price");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
         guiBuilder.item(GUIItemManager.getIndexItem(shopItemSection, bukkitPlayer, new PlaceholderContainer()
                 .add("price", price)), new ItemListener() {
             @Override
@@ -376,7 +377,7 @@ public class GuildShopGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, shopItemSection.getCurrentPath());
     }
 
     /**

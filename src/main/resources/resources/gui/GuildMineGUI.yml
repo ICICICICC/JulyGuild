@@ -111,11 +111,13 @@ items:
         - ' &f点击跳转'
   guild_spawn:
     available:
+      enabled: false
       priority: -8
       icon:
         material: ENDER_PEARL
         display_name: '&f传送到主城'
     unavailable:
+      enabled: false
       priority: -8
       icon:
         material: ENDER_PEARL

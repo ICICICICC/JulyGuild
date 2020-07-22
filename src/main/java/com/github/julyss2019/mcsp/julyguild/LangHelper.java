@@ -6,6 +6,7 @@ import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julylibrary.message.DateTimeUnit;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 
@@ -25,7 +26,7 @@ public class LangHelper {
             return JulyGuild.inst().getLangYaml().getString("Global.prefix");
         }
 
-        public static String getNickName(GuildMember guildMember) {
+        public static String getNickName(@NotNull GuildMember guildMember) {
             ConfigurationSection langSection = JulyGuild.inst().getLangYaml();
             String format = langSection.getString("Global.nick_name");
 
@@ -34,7 +35,7 @@ public class LangHelper {
                     .add("NAME", guildMember.getName()));
         }
 
-        public static String getPositionName(GuildPosition guildPosition) {
+        public static String getPositionName(@NotNull GuildPosition guildPosition) {
             return JulyGuild.inst().getLangYaml().getString("Guild.Position." + guildPosition.name().toLowerCase());
         }
     }

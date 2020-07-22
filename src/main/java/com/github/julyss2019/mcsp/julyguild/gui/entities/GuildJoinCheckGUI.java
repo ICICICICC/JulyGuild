@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
@@ -53,9 +53,9 @@ public class GuildJoinCheckGUI extends BasePageableGUI {
         this.guildMember = guildMember;
         this.guild = guildMember.getGuild();
 
-        GuildLogger.debug("开始: 加载 'items.request.indexes'.");
+        JulyGuildLogger.debug("开始: 加载 'items.request.indexes'.");
         this.itemIndexes = Util.getIndexes(thisGUISection.getString("items.request.indexes"));
-        GuildLogger.debug("结束: 加载 'items.request.indexes'.");
+        JulyGuildLogger.debug("结束: 加载 'items.request.indexes'.");
 
         this.itemIndexCount = itemIndexes.size();
     }
@@ -109,17 +109,17 @@ public class GuildJoinCheckGUI extends BasePageableGUI {
             }
         });
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                         .add("page", getCurrentPage() + 1)
                         .add("total_page", getPageCount()));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
         guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.page_items");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.page_items");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
@@ -128,7 +128,7 @@ public class GuildJoinCheckGUI extends BasePageableGUI {
                         }
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         if (getPageCount() > 0) {
             int requestCounter = getCurrentPage() * itemIndexes.size();
@@ -138,11 +138,11 @@ public class GuildJoinCheckGUI extends BasePageableGUI {
                 JoinRequest request = (JoinRequest) requests.get(requestCounter++);
                 GuildPlayer sender = request.getSender();
 
-                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.request.icon");
+                JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.request.icon");
                 ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.request.icon"), sender.getOfflineBukkitPlayer(), new PlaceholderContainer()
                         .add("sender_name", sender.getName())
                         .add("send_time", LangHelper.Global.getDateTimeFormat().format(request.getCreationTime())));
-                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.request.icon");
+                JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.request.icon");
 
                 guiBuilder.item(itemIndexes.get(i), itemBuilder.build());
                 indexMap.put(itemIndexes.get(i), request);

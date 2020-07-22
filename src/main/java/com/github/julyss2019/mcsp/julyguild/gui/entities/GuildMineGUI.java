@@ -14,7 +14,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMemberSign;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPosition;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderText;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -66,11 +66,11 @@ public class GuildMineGUI extends BasePlayerGUI {
     public Inventory createInventory() {
         PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, bukkitPlayer);
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
@@ -79,20 +79,20 @@ public class GuildMineGUI extends BasePlayerGUI {
                         }
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_info");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_info");
         guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_info"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_info");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_info");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.self_info");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.self_info");
         guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.self_info"), bukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(guildMember)));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.self_info");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.self_info");
 
         {
             String path = "items.guild_members." + ((guildMember.hasPermission(GuildPermission.MEMBER_KICK) || guildMember.hasPermission(GuildPermission.MANAGE_PERMISSION)) ? "manager" : "member");
 
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection(path), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -100,10 +100,10 @@ public class GuildMineGUI extends BasePlayerGUI {
                     new GuildMemberListGUI(GuildMineGUI.this, guild, guildMember).open();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
         }
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_donate");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_donate");
         guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_donate"), bukkitPlayer), new ItemListener() {
                     @Override
                     public void onClick(InventoryClickEvent event) {
@@ -111,27 +111,27 @@ public class GuildMineGUI extends BasePlayerGUI {
                         new GuildDonateGUI(GuildMineGUI.this, guildMember).open();
                     }
                 });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_donate");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_donate");
 
         // 公会主城
         {
             String path = "items.guild_spawn." + (guild.hasSpawn() ? "available" : "unavailable");
 
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection(path), bukkitPlayer), guild.hasSpawn() ? new ItemListener() {
                         @Override
                         public void onClick(InventoryClickEvent event) {
                             executeGuildSpawn();
                         }
                     } : null);
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
         }
 
         List<String> originalAnnouncements = guild.getAnnouncements().stream().map(s -> "§f" + s).collect(Collectors.toList());
 
         // 设置公会公告
         if (guildMember.hasPermission(GuildPermission.SET_ANNOUNCEMENTS)) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_announcement.setter");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_announcement.setter");
             PriorityItem priorityItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_announcement.setter"), bukkitPlayer);
 
             List<String> lores = new ArrayList<>(originalAnnouncements);
@@ -151,10 +151,10 @@ public class GuildMineGUI extends BasePlayerGUI {
                     executeSetGuildAnnouncement();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_announcement.setter");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_announcement.setter");
             // 获取公会公告
         } else {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_announcement.getter");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_announcement.getter");
             PriorityItem priorityItem = GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_announcement.getter"), bukkitPlayer);
             List<String> lores = new ArrayList<>(originalAnnouncements);
 
@@ -164,7 +164,7 @@ public class GuildMineGUI extends BasePlayerGUI {
 
             priorityItem.getItemBuilder().lores(lores);
             guiBuilder.item(priorityItem);
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_announcement.getter");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_announcement.getter");
         }
 
         // 公会签到
@@ -172,7 +172,7 @@ public class GuildMineGUI extends BasePlayerGUI {
             boolean isSignedToday = guildMemberSign.isSignedToday();
             String path = "items.guild_sign." + (guildMemberSign.isSignedToday() ? "unavailable" : "available");
 
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection(path), bukkitPlayer, new PlaceholderContainer()
                     .add("signed_count", guildMember.getSign().getSignedCount())), !isSignedToday ? new ItemListener() {
                 @Override
@@ -180,26 +180,26 @@ public class GuildMineGUI extends BasePlayerGUI {
                     executeGuildSign();
                 }
             } : null);
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
         }
 
         // 公会商店
         if (guildMember.hasPermission(GuildPermission.USE_SHOP)) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_shop");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_shop");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_shop"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     new GuildShopGUI(GuildMineGUI.this, guildMember).open();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_shop");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_shop");
         }
 
         // 成员免伤
         if (guildMember.hasPermission(GuildPermission.SET_MEMBER_DAMAGE)) {
             String path = "items.guild_set_member_damage." + (guild.isMemberDamageEnabled() ? "turn_off" : "turn_on");
 
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection(path), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -208,12 +208,12 @@ public class GuildMineGUI extends BasePlayerGUI {
                     reopen();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
         }
 
         // 入会审批
         if (guildMember.hasPermission(GuildPermission.PLAYER_JOIN_CHECK)) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_join_check");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_join_check");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_join_check"), bukkitPlayer), new ItemListener() {
                         @Override
                         public void onClick(InventoryClickEvent event) {
@@ -221,12 +221,12 @@ public class GuildMineGUI extends BasePlayerGUI {
                             new GuildJoinCheckGUI(GuildMineGUI.this, guildMember).open();
                         }
                     });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_join_check");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_join_check");
         }
 
         // 图标仓库
         if (guildMember.hasPermission(GuildPermission.USE_ICON_REPOSITORY)) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_icon_repository");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_icon_repository");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_icon_repository"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -234,29 +234,29 @@ public class GuildMineGUI extends BasePlayerGUI {
                     new GuildIconRepositoryGUI(GuildMineGUI.this, guildMember).open();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_icon_repository");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_icon_repository");
         }
 
         // 解散
         if (guildPosition == GuildPosition.OWNER) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_delete");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_delete");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_delete"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     executeGuildDelete();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_delete");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_delete");
         // 退出
         } else {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_leave");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.guild_leave");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.guild_leave"), bukkitPlayer), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
                     executeGuildLeave();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_leave");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.guild_leave");
         }
 
         return guiBuilder.build();

@@ -11,7 +11,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BaseConfirmGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.BasePlayerGUI;
 import com.github.julyss2019.mcsp.julyguild.gui.GUI;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julylibrary.inventory.ItemListener;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,7 +21,6 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class GuildMemberManageGUI extends BasePlayerGUI {
@@ -49,11 +48,11 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
 
         PriorityConfigGUI.Builder guiBuilder = new PriorityConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), targetBukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -62,7 +61,7 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         // 如果管理者和目标玩家一样
         if (managerGuildMember.equals(targetGuildMember)) {
@@ -71,7 +70,7 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
 
         // 是会长或自己有权限且对方无踢人权限
         if (guild.isOwner(managerGuildMember) || managerGuildMember.hasPermission(GuildPermission.MEMBER_KICK) && !targetGuildMember.hasPermission(GuildPermission.MEMBER_KICK)) {
-            GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member_kick");
+            JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member_kick");
             guiBuilder.item(GUIItemManager.getPriorityItem(thisGUISection.getConfigurationSection("items.member_kick"), targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember)), new ItemListener() {
                 @Override
                 public void onClick(InventoryClickEvent event) {
@@ -103,7 +102,7 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
                     }.open();
                 }
             });
-            GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member_kick");
+            JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member_kick");
         }
 
         if (managerGuildMember.hasPermission(GuildPermission.MANAGE_PERMISSION)) {
@@ -157,9 +156,9 @@ public class GuildMemberManageGUI extends BasePlayerGUI {
         String path = "items.per_" + guildPermission.name().toLowerCase() + "." + (targetGuildMember.hasPermission(guildPermission) ? "take" : "give");
         ConfigurationSection section = thisGUISection.getConfigurationSection(path);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
         PriorityItem priorityItem = GUIItemManager.getPriorityItem(section, targetBukkitPlayer, new PlaceholderContainer().addGuildMemberPlaceholders(targetGuildMember));;
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
         return priorityItem;
     }
 

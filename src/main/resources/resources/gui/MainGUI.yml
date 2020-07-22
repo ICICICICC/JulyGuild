@@ -4,7 +4,7 @@ title: '&e&l公会({page}/{total_page})'
 # 其他物品
 other_items:
   glass:
-    indexes: '47-49,51-53'
+    indexes: '47-48,50,52-53'
     icon:
       material: STAINED_GLASS_PANE
       display_name: ''
@@ -12,6 +12,13 @@ other_items:
         - '&cby July_ss'
 # 插件物品
 items:
+  back:
+    index: 49
+    sender: PLAYER # 支持玩家：PLAYER 控制台：CONSOLE
+    command: 'bs open MainShop <player>' # 变量 <player> 玩家
+    icon:
+      material: ARROW
+      display_name: '&c返回'
   guild:
     indexes: '11-17,20-26,29-35'
     icon:
@@ -25,14 +32,14 @@ items:
         - ' &f创建时间: {guild_creation_time}'
         - ' &f点击查看详细信息或加入'
   create_guild:
-    index: 50
+    index: 51
     icon:
       material: EMERALD
       display_name: '&f创建公会'
       lores:
         - ' &e也可以选择单击上方的图标来加入公会'
   my_guild:
-    index: 50
+    index: 51
     icon:
       material: SKULL_ITEM
       display_name: '&f我的公会'

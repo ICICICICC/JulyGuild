@@ -9,7 +9,7 @@ import com.github.julyss2019.mcsp.julyguild.gui.BasePageableGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.player.GuildPlayer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
@@ -65,9 +65,9 @@ public class GuildMemberListGUI extends BasePageableGUI {
 
         this.thisGUISection = plugin.getGUIYaml("GuildMemberListGUI").getConfigurationSection(viewerType.name().toLowerCase());
 
-        GuildLogger.debug("开始: 加载 'items.member.indexes'.");
+        JulyGuildLogger.debug("开始: 加载 'items.member.indexes'.");
         this.itemIndexes = Util.getIndexes(thisGUISection.getString( "items.member.indexes")); // 得到所有可供公会设置的位置
-        GuildLogger.debug("结束: 加载 'items.member.indexes'.");
+        JulyGuildLogger.debug("结束: 加载 'items.member.indexes'.");
 
         this.itemIndexCount = itemIndexes.size();
     }
@@ -86,17 +86,17 @@ public class GuildMemberListGUI extends BasePageableGUI {
         Map<Integer, GuildMember> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                         .add("page", getCurrentPage() + 1)
                         .add("total_page", getPageCount()));
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_BASIC);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
         guiBuilder.pageItems(thisGUISection.getConfigurationSection("items.page_items"), this);
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.page_items");
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer, new PlaceholderContainer().addGuildPlaceholders(guild)), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -105,7 +105,7 @@ public class GuildMemberListGUI extends BasePageableGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
 
         if (viewerType == ViewerType.MANAGER) {
@@ -136,11 +136,11 @@ public class GuildMemberListGUI extends BasePageableGUI {
 
             for (int i = 0; i < loopCount; i++) {
                 GuildMember guildMember = members.get(memberCounter++);
-                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member.icon");
+                JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.member.icon");
                 ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection("items.member.icon"), bukkitPlayer, new PlaceholderContainer()
                         .addGuildPlaceholders(guild)
                         .addGuildMemberPlaceholders(guildMember));
-                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member.icon");
+                JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.member.icon");
 
                 // 管理模式
                 if (viewerType == ViewerType.MANAGER) {

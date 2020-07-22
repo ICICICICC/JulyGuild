@@ -3,7 +3,7 @@ package com.github.julyss2019.mcsp.julyguild.gui.entities;
 import com.github.julyss2019.mcsp.julyguild.DebugMessage;
 import com.github.julyss2019.mcsp.julyguild.config.gui.IndexConfigGUI;
 import com.github.julyss2019.mcsp.julyguild.guild.Guild;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julyguild.JulyGuild;
 import com.github.julyss2019.mcsp.julyguild.config.gui.item.GUIItemManager;
@@ -58,7 +58,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder()
                 .fromConfig(thisGUISection, bukkitPlayer);
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
@@ -67,7 +67,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
                 }
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         if (thisGUISection.contains("donate_items")) {
             for (String itemName : thisGUISection.getConfigurationSection("donate_items").getKeys(false)) {
@@ -79,7 +79,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
                 double reward = donateItemSection.getDouble("reward");
                 ConfigurationSection confirmGUISection = donateItemSection.getConfigurationSection("ConfirmGUI");
 
-                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "donate_items." + itemName);
+                JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "donate_items." + itemName);
                 guiBuilder.item(GUIItemManager.getIndexItem(itemSection, bukkitPlayer, new PlaceholderContainer()
                         .add("price", price)
                         .add("reward", reward)), new ItemListener() {
@@ -178,7 +178,7 @@ public class GuildDonateGUI extends BasePlayerGUI {
                         }
                     }
                 });
-                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "donate_items." + itemName);
+                JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "donate_items." + itemName);
             }
         }
 

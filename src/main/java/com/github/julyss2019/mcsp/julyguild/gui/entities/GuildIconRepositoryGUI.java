@@ -11,7 +11,7 @@ import com.github.julyss2019.mcsp.julyguild.guild.Guild;
 import com.github.julyss2019.mcsp.julyguild.guild.GuildIcon;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildMember;
 import com.github.julyss2019.mcsp.julyguild.guild.member.GuildPermission;
-import com.github.julyss2019.mcsp.julyguild.logger.GuildLogger;
+import com.github.julyss2019.mcsp.julyguild.logger.JulyGuildLogger;
 import com.github.julyss2019.mcsp.julyguild.placeholder.PlaceholderContainer;
 import com.github.julyss2019.mcsp.julyguild.util.Util;
 import com.github.julyss2019.mcsp.julylibrary.inventory.InventoryListener;
@@ -43,9 +43,9 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
         this.guildMember = guildMember;
         this.guild = guildMember.getGuild();
 
-        GuildLogger.debug("开始: 加载 'items.guild_icon.indexes'.");
+        JulyGuildLogger.debug("开始: 加载 'items.guild_icon.indexes'.");
         this.itemIndexes = Util.getIndexes(thisGUISection.getString("items.guild_icon.indexes"));
-        GuildLogger.debug("结束: 加载 'items.guild_icon.indexes'.");
+        JulyGuildLogger.debug("结束: 加载 'items.guild_icon.indexes'.");
         this.itemIndexCount = itemIndexes.size();
     }
 
@@ -70,11 +70,11 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
         Map<Integer, GuildIcon> indexMap = new HashMap<>();
         IndexConfigGUI.Builder guiBuilder = new IndexConfigGUI.Builder();
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
         guiBuilder.fromConfig(thisGUISection, bukkitPlayer, new PlaceholderContainer()
                 .add("total_page", getPageCount())
                 .add("page", getCurrentPage() + 1));
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_BASIC);
 
 
         guiBuilder.listener(new InventoryListener() {
@@ -104,14 +104,14 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
                 });
 
 
-        GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, "items.back");
         guiBuilder.item(GUIItemManager.getIndexItem(thisGUISection.getConfigurationSection("items.back"), bukkitPlayer), new ItemListener() {
             @Override
             public void onClick(InventoryClickEvent event) {
                 back();
             }
         });
-        GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
+        JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, "items.back");
 
         if (getPageCount() > 0) {
             int itemCounter = getCurrentPage() * itemIndexCount;
@@ -121,10 +121,10 @@ public class GuildIconRepositoryGUI extends BasePageableGUI {
                 GuildIcon guildIcon = icons.get(itemCounter++);
                 String path = "items.guild_icon." + (Objects.equals(guildIcon, guild.getCurrentIcon()) ? "using" : "not_using") + ".icon";
 
-                GuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
+                JulyGuildLogger.debug(DebugMessage.BEGIN_GUI_LOAD_ITEM, path);
                 ItemBuilder itemBuilder = GUIItemManager.getItemBuilder(thisGUISection.getConfigurationSection(path)
                         , bukkitPlayer);
-                GuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
+                JulyGuildLogger.debug(DebugMessage.END_GUI_LOAD_ITEM, path);
 
                 if (guildIcon == null) {
                     itemBuilder.material(MainSettings.getGuildIconDefaultMaterial()).durability(MainSettings.getGuildIconDefaultDurability());
